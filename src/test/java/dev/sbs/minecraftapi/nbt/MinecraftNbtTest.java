@@ -6,8 +6,8 @@ import dev.sbs.api.collection.concurrent.ConcurrentList;
 import dev.sbs.api.util.SystemUtil;
 import dev.sbs.minecraftapi.MinecraftApi;
 import dev.sbs.minecraftapi.client.hypixel.request.HypixelRequest;
-import dev.sbs.minecraftapi.client.hypixel.response.skyblock.SkyBlockAuctionsResponse;
-import dev.sbs.minecraftapi.client.hypixel.response.skyblock.implementation.SkyBlockAuction;
+import dev.sbs.minecraftapi.client.hypixel.response.skyblock.auction.SkyBlockAuction;
+import dev.sbs.minecraftapi.client.hypixel.response.skyblock.auction.SkyBlockAuctionsResponse;
 import dev.sbs.minecraftapi.nbt.tags.collection.CompoundTag;
 import org.junit.jupiter.api.Test;
 
