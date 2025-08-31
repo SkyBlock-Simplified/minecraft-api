@@ -1,10 +1,13 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.island.mining;
+package dev.sbs.minecraftapi.skyblock.island.mining;
 
 import com.google.gson.annotations.SerializedName;
-import dev.sbs.minecraftapi.util.SkyBlockDate;
+import dev.sbs.minecraftapi.MinecraftApi;
+import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
+import dev.sbs.minecraftapi.skyblock.resource.Item;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -18,8 +21,8 @@ public class ForgeItem {
     private int slot;
     private boolean notified;
 
-    /*public @NotNull ItemModel getItemModel() {
-        return SimplifiedApi.getRepositoryOf(ItemModel.class).findFirstOrNull(ItemModel::getItemId, this.getItemId());
-    }*/
+    public @NotNull Item getItem() {
+        return MinecraftApi.getRepositoryOf(Item.class).findFirstOrNull(Item::getId, this.getItemId());
+    }
 
 }
