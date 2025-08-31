@@ -91,16 +91,17 @@ public class DungeonData implements PostInit {
     }
 
     public double getClassAverage() {
-        ConcurrentMap<DungeonClass.Type, DungeonClass> dungeonClasses = this.getClasses();
-        return dungeonClasses.stream()
+        return this.getClasses()
+            .stream()
             .map(Map.Entry::getValue)
             .mapToDouble(DungeonClass::getLevel)
-            .sum() / dungeonClasses.size();
+            .average()
+            .orElse(0.0);
     }
 
     public double getClassExperience() {
-        ConcurrentMap<DungeonClass.Type, DungeonClass> dungeonClasses = this.getClasses();
-        return dungeonClasses.stream()
+        return this.getClasses()
+            .stream()
             .map(Map.Entry::getValue)
             .mapToDouble(DungeonClass::getExperience)
             .sum();
@@ -108,10 +109,12 @@ public class DungeonData implements PostInit {
 
     public double getClassProgressPercentage() {
         ConcurrentMap<DungeonClass.Type, DungeonClass> dungeonClasses = this.getClasses();
-        return dungeonClasses.stream()
+        return this.getClasses()
+            .stream()
             .map(Map.Entry::getValue)
             .mapToDouble(DungeonClass::getTotalProgressPercentage)
-            .sum() / dungeonClasses.size();
+            .average()
+            .orElse(0.0);
     }
 
     public @NotNull ConcurrentMap<DungeonClass, Weight> getClassWeight() {

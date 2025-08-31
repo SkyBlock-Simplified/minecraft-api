@@ -8,7 +8,7 @@ import dev.sbs.api.io.gson.SerializedPath;
 import dev.sbs.minecraftapi.skyblock.NbtContent;
 import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
 import dev.sbs.minecraftapi.skyblock.island.data.pet.Pet;
-import dev.sbs.minecraftapi.skyblock.island.data.slayer.Slayer;
+import dev.sbs.minecraftapi.skyblock.island.data.slayer.SlayerProgress;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -93,7 +93,7 @@ public class Rift {
 
     @Getter
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
-    public static class SlayerQuest extends Slayer.Quest {
+    public static class SlayerQuest extends SlayerProgress.Quest {
 
         @SerializedName("combat_xp")
         private int combatXP;
