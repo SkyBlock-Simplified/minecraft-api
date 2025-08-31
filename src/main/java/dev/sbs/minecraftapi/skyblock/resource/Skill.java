@@ -3,23 +3,18 @@ package dev.sbs.minecraftapi.skyblock.resource;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
+import dev.sbs.api.data.Model;
 import dev.sbs.api.stream.pair.Pair;
 import dev.sbs.minecraftapi.MinecraftApi;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public interface Skill {
+public interface Skill extends Model {
 
     @NotNull String getId();
 
-    @NotNull String getName();
-
     @NotNull String getDescription();
-
-    int getMaxLevel();
-
-    @NotNull ConcurrentList<Level> getLevels();
 
     default @NotNull ConcurrentMap<String, Double> getEffects() {
         return this.getLevels()
@@ -30,6 +25,39 @@ public interface Skill {
                 Map.Entry::getValue,
                 Double::sum
             ));
+    }
+
+    default @NotNull ConcurrentList<Integer> getExperienceTiers() {
+        return this.getLevels()
+            .stream()
+            .map(Level::getTotalRequiredXP)
+            .collect(Concurrent.toUnmodifiableList());
+    }
+
+    default @NotNull SkillExtra getExtra() {
+        return MinecraftApi.getRepositoryOf(SkillExtra.class).findFirstOrNull(SkillExtra::getId, this.getId());
+    }
+
+    @NotNull ConcurrentList<Level> getLevels();
+
+    int getMaxLevel();
+
+    @NotNull String getName();
+
+    default double getWeightExponent() {
+        return this.getExtra().getWeightExponent();
+    }
+
+    default int getWeightDivider() {
+        return this.getExtra().getWeightDivider();
+    }
+
+    default boolean isCosmetic() {
+        return this.getExtra().isCosmetic();
+    }
+
+    default boolean notCosmetic() {
+        return !this.isCosmetic();
     }
 
     interface Level {
