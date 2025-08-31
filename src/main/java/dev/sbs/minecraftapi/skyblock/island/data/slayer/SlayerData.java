@@ -16,51 +16,49 @@ import java.util.Optional;
 @Getter
 public class SlayerData implements PostInit {
 
-    private final static @NotNull Slayer UNKNOWN = new Slayer(Slayer.Type.UNKNOWN, new BossData());
+    private final static @NotNull SlayerProgress UNKNOWN = new SlayerProgress("UNKNOWN", new BossData());
     @SerializedName("slayer_quest")
-    private final @NotNull Optional<Slayer.Quest> activeQuest = Optional.empty();
+    private final @NotNull Optional<SlayerProgress.Quest> activeQuest = Optional.empty();
     @Getter(AccessLevel.NONE)
     @SerializedName("slayer_bosses")
-    private @NotNull ConcurrentMap<Slayer.Type, BossData> slayerBosses = Concurrent.newMap();
-    private ConcurrentList<Slayer> slayers;
+    private @NotNull ConcurrentMap<String, BossData> slayerBosses = Concurrent.newMap();
+    private transient ConcurrentList<SlayerProgress> slayers = Concurrent.newList();
 
     @Override
     public void postInit() {
         this.slayers = this.slayerBosses.stream()
-            .map(Slayer::new)
+            .map(SlayerProgress::new)
             .collect(Concurrent.toUnmodifiableList());
     }
 
-    public @NotNull Slayer getSlayer(@NotNull Slayer.Type type) {
-        return this.getSlayer(type.name());
-    }
-
-    public @NotNull Slayer getSlayer(@NotNull String type) {
-        return this.getSlayers().matchFirst(skill -> skill.getType().name().equalsIgnoreCase(type)).orElse(UNKNOWN);
+    public @NotNull SlayerProgress getSlayer(@NotNull String id) {
+        return this.getSlayers().matchFirst(skill -> skill.getId().equalsIgnoreCase(id)).orElse(UNKNOWN);
     }
 
     public double getAverage() {
         return this.getSlayers()
             .stream()
-            .mapToDouble(Slayer::getLevel)
-            .sum() / this.getSlayers().size();
+            .mapToDouble(SlayerProgress::getLevel)
+            .average()
+            .orElse(0.0);
     }
 
     public double getExperience() {
         return this.getSlayers()
             .stream()
-            .mapToDouble(Slayer::getExperience)
+            .mapToDouble(SlayerProgress::getExperience)
             .sum();
     }
 
     public double getProgressPercentage() {
         return this.getSlayers()
             .stream()
-            .mapToDouble(Slayer::getTotalProgressPercentage)
-            .sum() / this.getSlayers().size();
+            .mapToDouble(SlayerProgress::getTotalProgressPercentage)
+            .average()
+            .orElse(0.0);
     }
 
-    public @NotNull ConcurrentMap<Slayer, Weight> getWeight() {
+    public @NotNull ConcurrentMap<SlayerProgress, Weight> getWeight() {
         return this.getSlayers()
             .stream()
             .map(slayer -> Pair.of(slayer, slayer.getWeight()))
