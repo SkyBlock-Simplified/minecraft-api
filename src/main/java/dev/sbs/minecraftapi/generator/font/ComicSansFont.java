@@ -19,8 +19,8 @@ public enum ComicSansFont implements Font {
     private final @NotNull Style style;
     private final float size;
 
-    ComicSansFont(@ResourcePath(base = "fonts") @NotNull String fileName, @NotNull Style style, float size) {
-        this(Font.initFont(String.format("fonts/%s", fileName), size), style, size);
+    ComicSansFont(@ResourcePath(base = "minecraft/fonts") @NotNull String fileName, @NotNull Style style, float size) {
+        this(Font.initFont(String.format("minecraft/fonts/%s", fileName), size), style, size);
     }
 
     /**

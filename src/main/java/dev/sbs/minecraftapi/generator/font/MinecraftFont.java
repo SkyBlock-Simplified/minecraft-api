@@ -20,8 +20,8 @@ public enum MinecraftFont implements Font {
     private final @NotNull Style style;
     private final float size;
 
-    MinecraftFont(@ResourcePath(base = "fonts") @NotNull String fileName, @NotNull Style style, float size) {
-        this(Font.initFont(String.format("fonts/%s", fileName), size), style, size);
+    MinecraftFont(@ResourcePath(base = "minecraft/fonts") @NotNull String fileName, @NotNull Style style, float size) {
+        this(Font.initFont(String.format("minecraft/fonts/%s", fileName), size), style, size);
     }
 
     MinecraftFont(@NotNull java.awt.Font font) {
