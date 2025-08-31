@@ -1,18 +1,17 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.museum;
+package dev.sbs.minecraftapi.skyblock;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
-import dev.sbs.minecraftapi.client.hypixel.response.skyblock.island.util.NbtContent;
-import dev.sbs.minecraftapi.util.SkyBlockDate;
+import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
 @Getter
-public class SkyBlockMuseum {
+public class Museum {
 
     private long value;
     private boolean appraisal;

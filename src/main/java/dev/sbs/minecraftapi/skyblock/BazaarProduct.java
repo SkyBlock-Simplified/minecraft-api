@@ -1,4 +1,4 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.bazaar;
+package dev.sbs.minecraftapi.skyblock;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
@@ -7,7 +7,7 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public class SkyBlockBazaarProduct {
+public class BazaarProduct {
 
     @SerializedName("product_id")
     private String itemId;

@@ -1,11 +1,11 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.firesales;
+package dev.sbs.minecraftapi.skyblock;
 
 import com.google.gson.annotations.SerializedName;
-import dev.sbs.minecraftapi.util.SkyBlockDate;
+import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
 import lombok.Getter;
 
 @Getter
-public class SkyBlockFireSale {
+public class FireSale {
 
     @SerializedName("item_id")
     private String itemId;

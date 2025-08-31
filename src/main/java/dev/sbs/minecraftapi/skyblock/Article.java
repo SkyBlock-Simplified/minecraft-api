@@ -1,4 +1,4 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.news;
+package dev.sbs.minecraftapi.skyblock;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AccessLevel;
@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @Getter
-public class SkyBlockArticle {
+public class Article {
 
     @SerializedName("item.material")
     private String material;
