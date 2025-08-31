@@ -6,7 +6,6 @@ import dev.sbs.api.collection.concurrent.ConcurrentList;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
 import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
 import dev.sbs.minecraftapi.skyblock.island.Potion;
-import dev.sbs.minecraftapi.skyblock.island.data.skill.Skill;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +23,7 @@ public class PlayerData {
     @SerializedName("fishing_treasure_caught")
     private int fishingTreasureCaught;
     @SerializedName("experience")
-    private @NotNull ConcurrentMap<Skill.Type, Double> skillExperience = Concurrent.newMap();
+    private @NotNull ConcurrentMap<String, Double> skillExperience = Concurrent.newMap();
 
     // Unlockables
     @SerializedName("reaper_peppers_eaten")

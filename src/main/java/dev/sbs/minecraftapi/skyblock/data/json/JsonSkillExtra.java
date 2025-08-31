@@ -1,9 +1,9 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.resource;
+package dev.sbs.minecraftapi.skyblock.data.json;
 
 import dev.sbs.api.builder.EqualsBuilder;
 import dev.sbs.api.builder.HashCodeBuilder;
 import dev.sbs.api.data.json.JsonModel;
-import dev.sbs.minecraftapi.skyblock.resource.SkillExtra;
+import dev.sbs.minecraftapi.skyblock.data.SkillExtra;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

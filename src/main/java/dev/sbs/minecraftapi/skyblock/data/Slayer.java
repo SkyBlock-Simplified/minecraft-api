@@ -1,4 +1,4 @@
-package dev.sbs.minecraftapi.skyblock.resource;
+package dev.sbs.minecraftapi.skyblock.data;
 
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public interface Skill extends Model {
+public interface Slayer extends Model {
 
     @NotNull String getId();
 
@@ -34,30 +34,24 @@ public interface Skill extends Model {
             .collect(Concurrent.toUnmodifiableList());
     }
 
-    default @NotNull SkillExtra getExtra() {
-        return MinecraftApi.getRepositoryOf(SkillExtra.class).findFirstOrNull(SkillExtra::getId, this.getId());
+    default @NotNull SlayerExtra getExtra() {
+        return MinecraftApi.getRepositoryOf(SlayerExtra.class).findFirstOrNull(SlayerExtra::getId, this.getId());
     }
 
     @NotNull ConcurrentList<Level> getLevels();
 
     int getMaxLevel();
 
+    int getMaxTier();
+
     @NotNull String getName();
 
-    default double getWeightExponent() {
-        return this.getExtra().getWeightExponent();
+    default double getWeightModifier() {
+        return this.getExtra().getWeightModifier();
     }
 
     default int getWeightDivider() {
         return this.getExtra().getWeightDivider();
-    }
-
-    default boolean isCosmetic() {
-        return this.getExtra().isCosmetic();
-    }
-
-    default boolean notCosmetic() {
-        return !this.isCosmetic();
     }
 
     interface Level {
@@ -65,6 +59,8 @@ public interface Skill extends Model {
         int getLevel();
 
         int getTotalRequiredXP();
+
+        @NotNull String getTitle();
 
         @NotNull ConcurrentList<String> getUnlocks();
 

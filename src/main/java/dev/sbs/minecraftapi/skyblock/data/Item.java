@@ -1,4 +1,4 @@
-package dev.sbs.minecraftapi.skyblock.resource;
+package dev.sbs.minecraftapi.skyblock.data;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;

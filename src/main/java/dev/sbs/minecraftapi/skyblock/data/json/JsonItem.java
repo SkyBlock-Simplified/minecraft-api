@@ -1,4 +1,4 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.resource;
+package dev.sbs.minecraftapi.skyblock.data.json;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.builder.EqualsBuilder;
@@ -9,7 +9,7 @@ import dev.sbs.api.collection.concurrent.ConcurrentMap;
 import dev.sbs.api.data.json.JsonModel;
 import dev.sbs.minecraftapi.client.mojang.profile.MojangProperty;
 import dev.sbs.minecraftapi.skyblock.Rarity;
-import dev.sbs.minecraftapi.skyblock.resource.Item;
+import dev.sbs.minecraftapi.skyblock.data.Item;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
