@@ -51,43 +51,43 @@ public class Member implements PostInit {
 
     // Data
     @SerializedName("player_data")
-    private PlayerData playerData = new PlayerData();
+    private @NotNull PlayerData playerData = new PlayerData();
     @SerializedName("slayer")
-    private SlayerData slayerData = new SlayerData();
+    private @NotNull SlayerData slayerData = new SlayerData();
     private transient SkillData skillData;
     @SerializedName("dungeons")
-    private DungeonData dungeonData = new DungeonData();
+    private @NotNull DungeonData dungeonData = new DungeonData();
     @SerializedName("pet_data")
-    private PetData petData = new PetData();
+    private @NotNull PetData petData = new PetData();
 
     // Locations
-    private Rift rift = new Rift();
+    private @NotNull Rift rift = new Rift();
 
     // Mining
-    private Mining mining = new Mining();
+    private @NotNull Mining mining = new Mining();
     @SerializedPath("forge.forge_processes.forge_1")
     private @NotNull ConcurrentMap<Integer, ForgeItem> forge = Concurrent.newMap();
     @SerializedName("glacite_player_data")
-    private GlaciteTunnels glaciteTunnels = new GlaciteTunnels();
+    private @NotNull GlaciteTunnels glaciteTunnels = new GlaciteTunnels();
 
-    private Bestiary bestiary = new Bestiary();
+    private @NotNull Bestiary bestiary = new Bestiary();
     @SerializedName("accessory_bag_storage")
-    private AccessoryBag accessoryBag = new AccessoryBag();
-    private Leveling leveling = new Leveling();
+    private @NotNull AccessoryBag accessoryBag = new AccessoryBag();
+    private @NotNull Leveling leveling = new Leveling();
     @SerializedName("nether_island_player_data")
-    private CrimsonIsle crimsonIsle = new CrimsonIsle();
-    private Experimentation experimentation = new Experimentation();
+    private @NotNull CrimsonIsle crimsonIsle = new CrimsonIsle();
+    private @NotNull Experimentation experimentation = new Experimentation();
     @SerializedName("player_stats")
-    private PlayerStats playerStats = new PlayerStats();
+    private @NotNull PlayerStats playerStats = new PlayerStats();
     @SerializedName("fairy_soul")
-    private FairySouls fairySouls = new FairySouls();
-    private Currencies currencies = new Currencies();
+    private @NotNull FairySouls fairySouls = new FairySouls();
+    private @NotNull Currencies currencies = new Currencies();
     @SerializedName("item_data")
-    private ItemSettings itemSettings = new ItemSettings();
+    private @NotNull ItemSettings itemSettings = new ItemSettings();
     @SerializedName("jacobs_contest")
-    private JacobsContest jacobsContest = new JacobsContest();
-    private Inventory inventory = new Inventory();
-    private Optional<Quests> quests = Optional.empty();
+    private @NotNull JacobsContest jacobsContest = new JacobsContest();
+    private @NotNull Inventory inventory = new Inventory();
+    private @NotNull Optional<Quests> quests = Optional.empty();
 
     // Maps
     @SerializedName("trophy_fish")
