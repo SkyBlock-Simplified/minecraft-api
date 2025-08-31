@@ -103,7 +103,7 @@ public class Member implements PostInit {
     public void postInit() {
         this.accessoryBag.initialize(this);
         this.trophyFish = new TrophyFish(this.trophyFishMap);
-        this.skillData = new SkillData(this.getPlayerData().getSkillExperience(), this.getJacobsContest());
+        this.skillData = new SkillData(this.getPlayerData().getSkillExperience(), this);
 
         this.collectionUnlocked = this.getCollection()
             .stream()
