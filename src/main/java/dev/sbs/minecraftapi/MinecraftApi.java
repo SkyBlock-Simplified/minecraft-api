@@ -6,7 +6,6 @@ import dev.sbs.api.io.gson.adapter.NbtContentTypeAdapter;
 import dev.sbs.api.io.gson.adapter.SkyBlockDateTypeAdapter;
 import dev.sbs.minecraftapi.client.hypixel.HypixelClient;
 import dev.sbs.minecraftapi.client.hypixel.request.HypixelRequest;
-import dev.sbs.minecraftapi.client.hypixel.response.skyblock.island.util.NbtContent;
 import dev.sbs.minecraftapi.client.mojang.MojangProxy;
 import dev.sbs.minecraftapi.client.mojang.client.MojangApiClient;
 import dev.sbs.minecraftapi.client.mojang.client.MojangSessionClient;
@@ -21,21 +20,21 @@ import dev.sbs.minecraftapi.client.sbs.response.SkyBlockEmojisResponse;
 import dev.sbs.minecraftapi.client.sbs.response.SkyBlockImagesResponse;
 import dev.sbs.minecraftapi.client.sbs.response.SkyBlockItemsResponse;
 import dev.sbs.minecraftapi.nbt.NbtFactory;
+import dev.sbs.minecraftapi.skyblock.NbtContent;
+import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
 import dev.sbs.minecraftapi.text.segment.ColorSegment;
 import dev.sbs.minecraftapi.text.segment.LineSegment;
 import dev.sbs.minecraftapi.text.segment.TextSegment;
-import dev.sbs.minecraftapi.util.SkyBlockDate;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * The {@code MinecraftApi} is non-instantiable utility class that serves as
- * an extension container for {@link SimplifiedApi} adding support for various
- * managers, services, builders, and API clients used across the application.
+ * The {@code MinecraftApi} is a non-instantiable extension of the {@link SimplifiedApi} utility class for managing and
+ * accessing various managers, services, builders, and API clients used across the application.
  * <p>
- * This class centralizes the initialization and retrieval of dependent resources to ensure
- * a simplified and consistent interface for interacting with API components.
+ * This class centralizes the initialization and retrieval of dependent resources to ensure a simplified and
+ * consistent interface for interacting with API components.
  * <ul>
  *     <li>Adds Minecraft and Hypixel related {@link Gson} configurations.</li>
  *     <li>Adds service support for {@link NbtFactory}.</li>
