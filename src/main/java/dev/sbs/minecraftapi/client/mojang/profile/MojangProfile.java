@@ -1,9 +1,9 @@
-package dev.sbs.minecraftapi.client.sbs.response;
+package dev.sbs.minecraftapi.client.mojang.profile;
 
-import dev.sbs.minecraftapi.client.mojang.response.MojangPropertiesResponse;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
 import dev.sbs.api.util.StringUtil;
+import dev.sbs.minecraftapi.client.mojang.response.MojangPropertiesResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.function.Function;
 
 @Getter
 @NoArgsConstructor
-public class MojangProfileResponse {
+public class MojangProfile {
 
     private UUID uniqueId;
     private String username;
@@ -29,7 +29,7 @@ public class MojangProfileResponse {
     private ConcurrentList<String> profileActions = Concurrent.newList();
     private Textures textures;
 
-    public MojangProfileResponse(@NotNull MojangPropertiesResponse properties) {
+    public MojangProfile(@NotNull MojangPropertiesResponse properties) {
         this.uniqueId = properties.getUniqueId();
         this.username = properties.getUsername();
         this.timestamp = mapProperty(properties, property -> property.getValue().getTimestamp()).orElse(Instant.now());
@@ -37,7 +37,7 @@ public class MojangProfileResponse {
         this.textures = new Textures(properties);
     }
 
-    private static <T> Optional<T> mapProperty(@NotNull MojangPropertiesResponse properties, @NotNull Function<MojangPropertiesResponse.Property, T> function) {
+    private static <T> Optional<T> mapProperty(@NotNull MojangPropertiesResponse properties, @NotNull Function<MojangProperty, T> function) {
         return properties.getProperties()
             .findFirst()
             .map(function);
@@ -55,8 +55,8 @@ public class MojangProfileResponse {
 
         @SneakyThrows
         public Textures(@NotNull MojangPropertiesResponse properties) { // Mojang Api
-            MojangPropertiesResponse.Property property = properties.getProperty();
-            MojangPropertiesResponse.Property.Value value = property.getValue();
+            MojangProperty property = properties.getProperty();
+            MojangProperty.Value value = property.getValue();
             this.slim = value.isSlim();
             this.raw = new Raw(
                 property.getRaw(),
