@@ -16,7 +16,7 @@ import javax.persistence.Id;
 @Entity
 @Resource(
     path = "skyblock",
-    name = "mobtypes"
+    name = "mob_types"
 )
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class JsonMobType implements MobType, JsonModel {

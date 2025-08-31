@@ -17,7 +17,7 @@ import javax.persistence.Id;
 @Entity
 @Resource(
     path = "skyblock",
-    name = "trophyfishes"
+    name = "trophy_fishes"
 )
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class JsonTrophyFish implements TrophyFish, JsonModel {
