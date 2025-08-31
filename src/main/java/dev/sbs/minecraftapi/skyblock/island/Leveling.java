@@ -1,4 +1,4 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.island;
+package dev.sbs.minecraftapi.skyblock.island;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
@@ -43,8 +43,8 @@ public class Leveling {
     @SerializedName("fishing_festival_sharks_killed")
     private int fishingFestivalSharksKilled;
 
-    public int getLevel() {
-        return (int) Math.floor(this.getExperience() / 100.0);
+    public double getLevel() {
+        return Math.floor(this.getExperience() / 100.0);
     }
 
 }

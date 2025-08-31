@@ -1,10 +1,10 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.island;
+package dev.sbs.minecraftapi.skyblock.island;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
 import dev.sbs.api.io.gson.SerializedPath;
-import dev.sbs.minecraftapi.client.hypixel.response.Rarity;
+import dev.sbs.minecraftapi.skyblock.Rarity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +35,8 @@ public class PlayerStats {
     private @NotNull ConcurrentMap<String, Object> riftStats = Concurrent.newMap();
     @SerializedPath("spooky.bats_spawned")
     private @NotNull ConcurrentMap<Integer, Integer> spawnedSpookyBats = Concurrent.newMap();
+    @SerializedName("glowing_mushrooms_broken")
+    private int glowingMushroomsBroken;
 
     // Damage
     @SerializedName("highest_damage")

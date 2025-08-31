@@ -1,9 +1,9 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.island.account;
+package dev.sbs.minecraftapi.skyblock.island.account;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
-import dev.sbs.minecraftapi.util.SkyBlockDate;
+import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
