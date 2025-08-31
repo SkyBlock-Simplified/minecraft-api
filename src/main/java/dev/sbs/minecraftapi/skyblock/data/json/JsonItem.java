@@ -7,6 +7,7 @@ import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
 import dev.sbs.api.data.json.JsonModel;
+import dev.sbs.api.data.json.Resource;
 import dev.sbs.minecraftapi.client.mojang.profile.MojangProperty;
 import dev.sbs.minecraftapi.skyblock.Rarity;
 import dev.sbs.minecraftapi.skyblock.data.Item;
@@ -15,17 +16,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.awt.*;
 import java.util.List;
 import java.util.Optional;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Entity
+@Resource(
+    path = "skyblock",
+    name = "items"
+)
+@NoArgsConstructor(access = AccessLevel.NONE)
 public class JsonItem implements Item, JsonModel {
 
     // Expected Data
+    private @Id @NotNull String id = "";
     private @NotNull String material = "";
-    private @NotNull String id = "";
     @SerializedName("name")
     private @NotNull String displayName = "";
     @SerializedName("tier")

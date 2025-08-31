@@ -3,17 +3,26 @@ package dev.sbs.minecraftapi.skyblock.data.json;
 import dev.sbs.api.builder.EqualsBuilder;
 import dev.sbs.api.builder.HashCodeBuilder;
 import dev.sbs.api.data.json.JsonModel;
+import dev.sbs.api.data.json.Resource;
 import dev.sbs.minecraftapi.skyblock.data.SkillExtra;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 @Getter
+@Entity
+@Resource(
+    path = "skyblock",
+    name = "skills_extra"
+)
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class JsonSkillExtra implements SkillExtra, JsonModel {
 
-    protected @NotNull String id = "";
+    private @Id @NotNull String id = "";
     private boolean cosmetic;
     private double weightExponent;
     private int weightDivider;

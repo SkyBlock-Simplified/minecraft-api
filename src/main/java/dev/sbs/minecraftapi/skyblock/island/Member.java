@@ -10,7 +10,7 @@ import dev.sbs.api.mutable.MutableDouble;
 import dev.sbs.api.stream.pair.Pair;
 import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
 import dev.sbs.minecraftapi.skyblock.island.crimson_isle.CrimsonIsle;
-import dev.sbs.minecraftapi.skyblock.island.crimson_isle.TrophyFish;
+import dev.sbs.minecraftapi.skyblock.island.crimson_isle.TrophyFishing;
 import dev.sbs.minecraftapi.skyblock.island.data.PlayerData;
 import dev.sbs.minecraftapi.skyblock.island.data.dungeon.DungeonData;
 import dev.sbs.minecraftapi.skyblock.island.data.pet.PetData;
@@ -93,7 +93,7 @@ public class Member implements PostInit {
     @SerializedName("trophy_fish")
     @Getter(AccessLevel.NONE)
     private @NotNull ConcurrentMap<String, Object> trophyFishMap = Concurrent.newMap();
-    private transient TrophyFish trophyFish;
+    private transient TrophyFishing trophyFish;
     private @NotNull ConcurrentMap<String, Long> collection = Concurrent.newMap();
     private transient @NotNull ConcurrentMap<String, Integer> collectionUnlocked = Concurrent.newMap();
     @SerializedPath("objectives.tutorial")
@@ -102,7 +102,7 @@ public class Member implements PostInit {
     @Override
     public void postInit() {
         this.accessoryBag.initialize(this);
-        this.trophyFish = new TrophyFish(this.trophyFishMap);
+        this.trophyFish = new TrophyFishing(this.trophyFishMap);
         this.skillData = new SkillData(this.getPlayerData().getSkillExperience(), this);
 
         this.collectionUnlocked = this.getCollection()
