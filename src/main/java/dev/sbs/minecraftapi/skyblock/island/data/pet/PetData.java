@@ -1,4 +1,4 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.island.pet;
+package dev.sbs.minecraftapi.skyblock.island.data.pet;
 
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
@@ -13,7 +13,7 @@ public class PetData {
 
     private final static @NotNull ConcurrentList<Integer> magicFindPetScore = Concurrent.newList(10, 25, 50, 75, 100, 130, 175, 225, 275, 325, 375, 450, 500);
     private final @NotNull ConcurrentList<Pet> pets = Concurrent.newList();
-    private final AutoPet autopet = new AutoPet();
+    private final @NotNull AutoPet autopet = new AutoPet();
 
     public @NotNull Optional<Pet> getActivePet() {
         return this.getPets()

@@ -1,13 +1,16 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.island.dungeon;
+package dev.sbs.minecraftapi.skyblock.island.data.dungeon;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
 import dev.sbs.api.collection.concurrent.ConcurrentSet;
+import dev.sbs.api.io.gson.PostInit;
 import dev.sbs.api.io.gson.SerializedPath;
+import dev.sbs.api.stream.pair.Pair;
+import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
+import dev.sbs.minecraftapi.skyblock.type.Weight;
 import dev.sbs.minecraftapi.text.ChatFormat;
-import dev.sbs.minecraftapi.util.SkyBlockDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,81 +20,108 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+@Getter
 @NoArgsConstructor
-public class DungeonData {
+public class DungeonData implements PostInit {
 
     @SerializedName("dungeon_types")
-    private @NotNull ConcurrentMap<Dungeon.Type, Dungeon> dungeonMap = Concurrent.newMap();
-    private transient @NotNull ConcurrentList<Dungeon> dungeonList = Concurrent.newList(); // Initialized Later
+    @Getter(AccessLevel.NONE)
+    private @NotNull ConcurrentMap<String, FloorData> dungeonMap = Concurrent.newMap();
     @SerializedName("player_classes")
-    private @NotNull ConcurrentMap<Dungeon.Class.Type, ConcurrentMap<String, Double>> classMap = Concurrent.newMap();
-    private transient @NotNull ConcurrentList<Dungeon.Class> classList = Concurrent.newList(); // Initialized Later
+    @Getter(AccessLevel.NONE)
+    private @NotNull ConcurrentMap<DungeonClass.Type, ConcurrentMap<String, Double>> classMap = Concurrent.newMap();
     @SerializedPath("dungeon_journal.unlocked_journals")
-    @Getter private @NotNull ConcurrentList<Integer> unlockedJournals = Concurrent.newList();
+    private @NotNull ConcurrentList<Integer> unlockedJournals = Concurrent.newList();
     @SerializedName("dungeons_blah_blah")
-    @Getter private @NotNull ConcurrentSet<String> dungeonsFirstTalk = Concurrent.newSet();
+    private @NotNull ConcurrentSet<String> dungeonsFirstTalk = Concurrent.newSet();
     @SerializedName("selected_dungeon_class")
-    @Getter private @NotNull Dungeon.Class.Type selectedClass;
+    private @NotNull DungeonClass.Type selectedClass = DungeonClass.Type.UNKNOWN;
     @SerializedName("daily_runs")
-    @Getter private DailyRuns dailyRuns = new DailyRuns();
-    @Getter private Treasures treasures = new Treasures();
-    private transient boolean initialized;
+    private @NotNull DailyRuns dailyRuns = new DailyRuns();
+    private @NotNull Treasures treasures = new Treasures();
 
-    public @NotNull ConcurrentList<Dungeon.Class> getClasses() {
-        if (!this.initialized)
-            this.initialize();
+    // PostInit
 
-        return this.classList;
+    private transient @NotNull ConcurrentMap<Dungeon.Type, Dungeon> dungeons = Concurrent.newMap();
+    private transient @NotNull ConcurrentMap<DungeonClass.Type, DungeonClass> classes = Concurrent.newMap();
+
+    @Override
+    public void postInit() {
+        this.dungeonMap.stream()
+            .filter(entry -> !entry.getKey().startsWith("MASTER_"))
+            .forEach((key, value) -> this.dungeons.put(Dungeon.Type.of(key), new Dungeon(
+                value.getExperience(), value,
+                this.dungeonMap.getOrDefault(String.format("MASTER_%s", key), new FloorData())
+            )));
+
+        this.classes = this.classMap.stream()
+            .map(entry -> Pair.of(
+                entry.getKey(),
+                new DungeonClass(entry.getValue().get("experience"))
+            ))
+            .collect(Concurrent.toUnmodifiableMap());
     }
 
-    public @NotNull Dungeon.Class getClass(@NotNull Dungeon.Class.Type classType) {
+    public @NotNull DungeonClass getClass(@NotNull DungeonClass.Type classType) {
         return this.getClasses()
             .stream()
-            .filter(dungeonClass -> dungeonClass.getType() == classType)
+            .filterKey(type -> type == classType)
+            .map(Map.Entry::getValue)
             .findFirst()
             .orElseThrow();
-    }
-
-    public @NotNull ConcurrentList<Dungeon> getDungeons() {
-        if (!this.initialized)
-            this.initialize();
-
-        return this.dungeonList;
     }
 
     public @NotNull Dungeon getDungeon(@NotNull Dungeon.Type dungeonType) {
         return this.getDungeons()
             .stream()
-            .filter(dungeon -> dungeon.getType() == dungeonType)
+            .filterKey(type -> type == dungeonType)
+            .map(Map.Entry::getValue)
             .findFirst()
             .orElseThrow();
     }
 
-    private void initialize() {
-        // Initialize Dungeons
-        this.dungeonMap.stream()
-            .filter(entry -> entry.getKey().containsExperience())
-            .findFirst()
-            .ifPresent(entry -> {
-                entry.getValue().type = entry.getKey();
+    public @NotNull ConcurrentMap<Dungeon, Weight> getWeight() {
+        return this.getDungeons()
+            .stream()
+            .map((type, dungeon) -> Pair.of(
+                dungeon,
+                dungeon.getWeight()
+            ))
+            .collect(Concurrent.toMap());
+    }
 
-                this.dungeonMap.stream()
-                    .filter(other -> !entry.getKey().containsExperience())
-                    .forEach(other -> {
-                        other.getValue().type = other.getKey();
-                        other.getValue().experience = entry.getValue().getExperience();
-                    });
-            });
-        this.dungeonList = this.dungeonMap.stream()
+    public double getClassAverage() {
+        ConcurrentMap<DungeonClass.Type, DungeonClass> dungeonClasses = this.getClasses();
+        return dungeonClasses.stream()
             .map(Map.Entry::getValue)
-            .collect(Concurrent.toList());
+            .mapToDouble(DungeonClass::getLevel)
+            .sum() / dungeonClasses.size();
+    }
 
-        // Initialize Classes
-        this.classList = this.classMap.stream()
-            .map(entry -> new Dungeon.Class(entry.getKey(), entry.getValue().get("experience")))
-            .collect(Concurrent.toList());
+    public double getClassExperience() {
+        ConcurrentMap<DungeonClass.Type, DungeonClass> dungeonClasses = this.getClasses();
+        return dungeonClasses.stream()
+            .map(Map.Entry::getValue)
+            .mapToDouble(DungeonClass::getExperience)
+            .sum();
+    }
 
-        this.initialized = true;
+    public double getClassProgressPercentage() {
+        ConcurrentMap<DungeonClass.Type, DungeonClass> dungeonClasses = this.getClasses();
+        return dungeonClasses.stream()
+            .map(Map.Entry::getValue)
+            .mapToDouble(DungeonClass::getTotalProgressPercentage)
+            .sum() / dungeonClasses.size();
+    }
+
+    public @NotNull ConcurrentMap<DungeonClass, Weight> getClassWeight() {
+        return this.getClasses()
+            .stream()
+            .map((type, dungeonClass) -> Pair.of(
+                dungeonClass,
+                dungeonClass.getWeight()
+            ))
+            .collect(Concurrent.toMap());
     }
 
     @Getter
@@ -121,7 +151,7 @@ public class DungeonData {
             @SerializedName("completion_ts")
             private SkyBlockDate.RealTime completionTime;
             @SerializedName("dungeon_type")
-            private Dungeon.Type dungeonType;
+            private @NotNull Dungeon.Type dungeonType = Dungeon.Type.UNKNOWN;
             @SerializedName("dungeon_tier")
             private int tier;
             private @NotNull ConcurrentList<Participant> participants = Concurrent.newList();
@@ -146,8 +176,8 @@ public class DungeonData {
                     return Integer.parseInt(DISPLAY_PATTERN.matcher(this.getDisplayName()).group(4));
                 }
 
-                public @NotNull Dungeon.Class.Type getClassType() {
-                    return Dungeon.Class.Type.of(DISPLAY_PATTERN.matcher(this.getDisplayName()).group(3).toUpperCase());
+                public @NotNull DungeonClass.Type getClassType() {
+                    return DungeonClass.Type.of(DISPLAY_PATTERN.matcher(this.getDisplayName()).group(3).toUpperCase());
                 }
 
                 public @NotNull String getName() {
@@ -165,7 +195,7 @@ public class DungeonData {
             @SerializedName("run_id")
             private @NotNull UUID runId;
             @SerializedName("chest_id")
-            private @NotNull  UUID chestId;
+            private @NotNull UUID chestId;
             @SerializedName("treasure_type")
             private @NotNull Type type;
             private int quality;

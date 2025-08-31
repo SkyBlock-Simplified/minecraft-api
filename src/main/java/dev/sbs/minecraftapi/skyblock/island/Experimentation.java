@@ -1,59 +1,43 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.island;
+package dev.sbs.minecraftapi.skyblock.island;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
-import dev.sbs.minecraftapi.util.SkyBlockDate;
+import dev.sbs.api.io.gson.PostInit;
+import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
+import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class Experimentation {
+@Getter
+public class Experimentation implements PostInit {
 
     @SerializedName("claims_resets")
-    @Getter private int resetClaims;
+    private int resetClaims;
     @SerializedName("claims_resets_timestamp")
-    @Getter private Optional<SkyBlockDate.RealTime> resetClaimsTimestamp = Optional.empty();
+    private Optional<SkyBlockDate.RealTime> resetClaimsTimestamp = Optional.empty();
     @SerializedName("serums_drank")
-    @Getter private int serumsDrank;
-    private boolean initialized;
+    private int serumsDrank;
 
+    @Getter(AccessLevel.NONE)
     private @NotNull ConcurrentMap<String, Long> pairings = Concurrent.newMap();
-    private transient Optional<Table> superpairs;
+    private transient @NotNull Optional<Table> superpairs = Optional.empty();
 
+    @Getter(AccessLevel.NONE)
     private @NotNull ConcurrentMap<String, Long> simon = Concurrent.newMap();
-    private transient Optional<Table> chronomatron;
+    private transient @NotNull Optional<Table> chronomatron = Optional.empty();
 
+    @Getter(AccessLevel.NONE)
     private @NotNull ConcurrentMap<String, Long> numbers = Concurrent.newMap();
-    private transient Optional<Table> ultrasequencer;
+    private transient @NotNull Optional<Table> ultrasequencer = Optional.empty();
 
-    public @NotNull Optional<Table> getSuperpairs() {
-        if (!this.initialized)
-            this.initialize();
-
-        return this.superpairs;
-    }
-
-    public @NotNull Optional<Table> getChronomatron() {
-        if (!this.initialized)
-            this.initialize();
-
-        return this.chronomatron;
-    }
-
-    public @NotNull Optional<Table> getUltrasequencer() {
-        if (!this.initialized)
-            this.initialize();
-
-        return this.ultrasequencer;
-    }
-
-    private void initialize() {
+    @Override
+    public void postInit() {
         this.superpairs = Optional.of(new Table(this.pairings));
         this.chronomatron = Optional.of(new Table(this.simon));
         this.ultrasequencer = Optional.of(new Table(this.numbers));
-        this.initialized = true;
     }
 
     @Getter

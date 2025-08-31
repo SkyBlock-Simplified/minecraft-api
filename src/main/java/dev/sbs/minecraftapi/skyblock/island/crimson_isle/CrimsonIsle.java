@@ -1,4 +1,4 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.island.crimson_isle;
+package dev.sbs.minecraftapi.skyblock.island.crimson_isle;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
@@ -9,7 +9,7 @@ import dev.sbs.api.io.gson.SerializedPath;
 import dev.sbs.api.stream.pair.Pair;
 import dev.sbs.api.util.Range;
 import dev.sbs.api.util.StringUtil;
-import dev.sbs.minecraftapi.util.SkyBlockDate;
+import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,25 +23,21 @@ import java.util.Optional;
 @Getter
 public class CrimsonIsle implements PostInit {
 
-    private Dojo dojo;
-    @Getter(AccessLevel.NONE)
-    @SerializedName("dojo")
-    private @NotNull ConcurrentMap<String, Integer> dojoMap = Concurrent.newMap();
-    private Abiphone abiphone = new Abiphone();
-    private Matriarch matriarch = new Matriarch();
+    private @NotNull Abiphone abiphone = new Abiphone();
+    private @NotNull Matriarch matriarch = new Matriarch();
     @SerializedName("last_minibosses_killed")
     private @NotNull ConcurrentList<String> lastMinibossesKilled = Concurrent.newList();
 
     // Factions
     @SerializedName("selected_faction")
-    private Faction selectedFaction = Faction.NONE;
+    private @NotNull Faction selectedFaction = Faction.NONE;
     @SerializedName("mages_reputation")
     private int mageReputation;
     @SerializedName("barbarians_reputation")
     private int barbarianReputation;
 
     // Kuudra
-    private Kuudra kuudra;
+    private @NotNull Kuudra kuudra = new Kuudra();
     @Getter(AccessLevel.NONE)
     private @NotNull ConcurrentMap<String, Integer> kuudra_completed_tiers = Concurrent.newMap();
     @Getter(AccessLevel.NONE)
@@ -50,6 +46,12 @@ public class CrimsonIsle implements PostInit {
     @Getter(AccessLevel.NONE)
     @SerializedPath("kuudra_party_finder.group_builder")
     private Kuudra.GroupBuilder kuudra_group_builder = new Kuudra.GroupBuilder();
+
+    // Dojo
+    private @NotNull Dojo dojo = new Dojo();
+    @Getter(AccessLevel.NONE)
+    @SerializedName("dojo")
+    private @NotNull ConcurrentMap<String, Integer> dojoMap = Concurrent.newMap();
 
     @Override
     public void postInit() {
@@ -86,27 +88,24 @@ public class CrimsonIsle implements PostInit {
             private boolean talkedTo;
             @SerializedName("completed_quest")
             private boolean questCompleted;
+            @SerializedName("dnd_enabled")
+            private boolean doNotDisturb;
+            private @NotNull ConcurrentMap<String, Object> specific = Concurrent.newMap();
+
+            // Calls
             @SerializedName("incoming_calls_count")
             private int incomingCalls;
-            private @NotNull ConcurrentMap<String, Object> specific = Concurrent.newMap();
             @SerializedName("last_call")
-            private @NotNull Optional<SkyBlockDate.RealTime> lastCall = Optional.empty();
+            private @NotNull Optional<SkyBlockDate.RealTime> lastOutgoingCall = Optional.empty();
+            @SerializedName("last_call_incoming")
+            private @NotNull Optional<SkyBlockDate.RealTime> lastIncomingCall = Optional.empty();
 
         }
 
     }
 
-    public enum Faction {
-
-        NONE,
-        @SerializedName("mages")
-        MAGE,
-        @SerializedName("barbarians")
-        BARBARIAN
-
-    }
-
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Matriarch {
 
         @SerializedName("pearls_collected")
@@ -122,6 +121,10 @@ public class CrimsonIsle implements PostInit {
     public static class Dojo {
 
         private final @NotNull ConcurrentMap<Type, Integer> points;
+
+        private Dojo() {
+            this(Concurrent.newMap());
+        }
 
         private Dojo(@NotNull ConcurrentMap<String, Integer> dojo) {
             this.points = Concurrent.newUnmodifiableMap(
@@ -169,6 +172,10 @@ public class CrimsonIsle implements PostInit {
         private final @NotNull ConcurrentMap<Tier, Integer> highestWave;
         private final @NotNull SearchSettings searchSettings;
         private final @NotNull GroupBuilder groupBuilder;
+
+        private Kuudra() {
+            this(Concurrent.newMap(), null, null);
+        }
 
         private Kuudra(@NotNull ConcurrentMap<String, Integer> kuudraCompletedTiers, @Nullable Kuudra.SearchSettings kuudraSearchSettings, @Nullable Kuudra.GroupBuilder kuudraGroupBuilder) {
             this.searchSettings = (kuudraSearchSettings != null ? kuudraSearchSettings : new SearchSettings());
@@ -251,6 +258,23 @@ public class CrimsonIsle implements PostInit {
             private int requiredCombatLevel;
 
         }
+
+    }
+
+    @Getter
+    public static class Quests {
+
+        // TODO
+
+    }
+
+    public enum Faction {
+
+        NONE,
+        @SerializedName("mages")
+        MAGE,
+        @SerializedName("barbarians")
+        BARBARIAN
 
     }
 

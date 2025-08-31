@@ -1,75 +1,78 @@
-package dev.sbs.minecraftapi.client.hypixel.response.skyblock.island;
+package dev.sbs.minecraftapi.skyblock.island;
 
 import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
 import dev.sbs.api.collection.concurrent.linked.ConcurrentLinkedMap;
+import dev.sbs.api.io.gson.PostInit;
 import dev.sbs.api.stream.pair.Pair;
 import dev.sbs.api.util.NumberUtil;
-import dev.sbs.minecraftapi.util.SkyBlockDate;
+import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
-public class Quests {
+import java.util.Optional;
 
+@Getter
+public class Quests implements PostInit {
+
+    @Getter(AccessLevel.NONE)
     @SerializedName("harp_quest")
     private @NotNull ConcurrentMap<String, Object> melodyHarpMap = Concurrent.newMap();
-    private MelodyHarp melodyHarp;
+    private transient MelodyHarp melodyHarp;
     @SerializedName("trapper_quest")
-    @Getter private Trapper trapper = new Trapper();
+    private @NotNull Trapper trapper = new Trapper();
 
-    public @NotNull MelodyHarp getMelodyHarp() {
-        if (this.melodyHarp == null)
-            this.melodyHarp = new MelodyHarp(this.melodyHarpMap);
-
-        return this.melodyHarp;
+    @Override
+    public void postInit() {
+        this.melodyHarp = new MelodyHarp(this.melodyHarpMap);
     }
 
     @Getter
     public static class MelodyHarp {
 
         private final boolean talismanClaimed;
-        private final String selectedSong;
-        private final SkyBlockDate.RealTime selectedSongTimestamp;
-        private final ConcurrentMap<String, Song> songs;
+        private final @NotNull Optional<String> selectedSong;
+        private final @NotNull SkyBlockDate.RealTime selectedSongTimestamp;
+        private final @NotNull ConcurrentMap<String, Song> songs;
 
         MelodyHarp(@NotNull ConcurrentMap<String, Object> harpQuest) {
             this.talismanClaimed = (boolean) harpQuest.removeOrGet("claimed_talisman", false);
-            this.selectedSong = (String) harpQuest.removeOrGet("selected_song", "");
+            this.selectedSong = harpQuest.getOptional("selected_song").map(String::valueOf);
             long epoch = NumberUtil.createNumber(String.valueOf(harpQuest.removeOrGet("selected_song_epoch", 0))).longValue();
-            this.selectedSongTimestamp = new SkyBlockDate.RealTime(epoch * 1000) ;
+            this.selectedSongTimestamp = new SkyBlockDate.RealTime(epoch * 1000);
 
             ConcurrentLinkedMap<String, ConcurrentMap<String, Integer>> songMap = Concurrent.newLinkedMap();
-            harpQuest.forEach((harpKey, harpValue) -> {
-                if (harpValue instanceof Number) {
-                    String songKey = harpKey.replace("song_", "");
+            harpQuest.stream()
+                .filterValue(Number.class::isInstance)
+                .forEach((key, value) -> {
+                    String songKey = key.replace("song_", "");
                     String songName = songKey.replaceAll("_((best|perfect)_)?completions?", "");
                     String category = songKey.replace(String.format("%s_", songName), "");
 
                     if (!songMap.containsKey(songName))
                         songMap.put(songName, Concurrent.newMap());
 
-                    songMap.get(songName).put(category, NumberUtil.createNumber(harpValue.toString()).intValue());
-                }
-            });
+                    songMap.get(songName).put(category, NumberUtil.createNumber(value.toString()).intValue());
+                });
 
-            this.songs = Concurrent.newUnmodifiableMap(
-                songMap.stream()
-                    .map(entry -> Pair.of(
-                        entry.getKey(),
-                        new Song(
-                            entry.getValue().getOrDefault("best_completion", 0),
-                            entry.getValue().getOrDefault("completions", 0),
-                            entry.getValue().getOrDefault("perfect_completions", 0)
-                        )
-                    ))
-                    .collect(Concurrent.toMap())
-            );
+            this.songs = songMap.stream()
+                .map((key, value) -> Pair.of(
+                    key,
+                    new Song(
+                        value.getOrDefault("best_completion", 0),
+                        value.getOrDefault("completions", 0),
+                        value.getOrDefault("perfect_completions", 0)
+                    )
+                ))
+                .collect(Concurrent.toUnmodifiableMap());
         }
 
         @Getter
-        @RequiredArgsConstructor
+        @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
         public static class Song {
 
             private final int bestCompletion;
@@ -81,6 +84,7 @@ public class Quests {
     }
 
     @Getter
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
     public static class Trapper {
 
         @SerializedName("last_task_time")
