@@ -5,7 +5,7 @@ import dev.sbs.api.builder.HashCodeBuilder;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
 import dev.sbs.api.data.json.JsonModel;
-import dev.sbs.api.data.json.Resource;
+import dev.sbs.api.data.json.JsonResource;
 import dev.sbs.minecraftapi.skyblock.data.Slayer;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,9 +17,12 @@ import javax.persistence.Id;
 
 @Getter
 @Entity
-@Resource(
+@JsonResource(
     path = "skyblock",
-    name = "slayers"
+    name = "slayers",
+    required = {
+        JsonSlayerExtra.class
+    }
 )
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class JsonSlayer implements Slayer, JsonModel {
