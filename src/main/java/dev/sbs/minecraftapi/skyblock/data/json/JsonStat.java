@@ -3,7 +3,7 @@ package dev.sbs.minecraftapi.skyblock.data.json;
 import dev.sbs.api.builder.EqualsBuilder;
 import dev.sbs.api.builder.HashCodeBuilder;
 import dev.sbs.api.data.json.JsonModel;
-import dev.sbs.api.data.json.Resource;
+import dev.sbs.api.data.json.JsonResource;
 import dev.sbs.minecraftapi.skyblock.data.Stat;
 import dev.sbs.minecraftapi.text.ChatFormat;
 import lombok.AccessLevel;
@@ -16,7 +16,7 @@ import javax.persistence.Id;
 
 @Getter
 @Entity
-@Resource(
+@JsonResource(
     path = "skyblock",
     name = "stats"
 )

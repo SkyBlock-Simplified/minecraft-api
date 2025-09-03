@@ -6,7 +6,7 @@ import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentList;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
 import dev.sbs.api.data.json.JsonModel;
-import dev.sbs.api.data.json.Resource;
+import dev.sbs.api.data.json.JsonResource;
 import dev.sbs.minecraftapi.skyblock.data.Collection;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import javax.persistence.Id;
 
 @Getter
 @Entity
-@Resource(
+@JsonResource(
     path = "skyblock",
     name = "collections"
 )

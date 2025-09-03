@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.collection.concurrent.Concurrent;
 import dev.sbs.api.collection.concurrent.ConcurrentMap;
 import dev.sbs.api.data.json.JsonModel;
-import dev.sbs.api.data.json.Resource;
+import dev.sbs.api.data.json.JsonResource;
 import dev.sbs.minecraftapi.skyblock.data.Gemstone;
 import dev.sbs.minecraftapi.text.ChatFormat;
 import lombok.AccessLevel;
@@ -17,7 +17,7 @@ import javax.persistence.Id;
 
 @Getter
 @Entity
-@Resource(
+@JsonResource(
     path = "skyblock",
     name = "gemstones"
 )
