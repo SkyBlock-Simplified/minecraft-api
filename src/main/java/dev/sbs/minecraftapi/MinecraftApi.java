@@ -2,8 +2,6 @@ package dev.sbs.minecraftapi;
 
 import com.google.gson.Gson;
 import dev.sbs.api.SimplifiedApi;
-import dev.sbs.api.io.gson.adapter.NbtContentTypeAdapter;
-import dev.sbs.api.io.gson.adapter.SkyBlockDateTypeAdapter;
 import dev.sbs.minecraftapi.client.hypixel.HypixelClient;
 import dev.sbs.minecraftapi.client.hypixel.request.HypixelRequest;
 import dev.sbs.minecraftapi.client.mojang.MojangProxy;
@@ -22,6 +20,8 @@ import dev.sbs.minecraftapi.client.sbs.response.SkyBlockItemsResponse;
 import dev.sbs.minecraftapi.nbt.NbtFactory;
 import dev.sbs.minecraftapi.skyblock.NbtContent;
 import dev.sbs.minecraftapi.skyblock.date.SkyBlockDate;
+import dev.sbs.minecraftapi.skyblock.gson.NbtContentTypeAdapter;
+import dev.sbs.minecraftapi.skyblock.gson.SkyBlockDateTypeAdapter;
 import dev.sbs.minecraftapi.text.segment.ColorSegment;
 import dev.sbs.minecraftapi.text.segment.LineSegment;
 import dev.sbs.minecraftapi.text.segment.TextSegment;
