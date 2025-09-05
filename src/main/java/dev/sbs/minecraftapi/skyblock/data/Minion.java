@@ -16,11 +16,6 @@ public interface Minion extends Model {
         400, 450, 500, 550, 600, 650, 700, 750, 800, 850
     );
 
-    @NotNull ConcurrentList<Integer> PET_SCORE = Concurrent.newList(
-        10, 25, 50, 75, 100, 130, 175,
-        225, 275, 325, 375, 450, 500
-    );
-
     @NotNull String getId();
 
     @NotNull String getName();
