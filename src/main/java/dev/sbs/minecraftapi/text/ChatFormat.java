@@ -30,6 +30,7 @@ public enum ChatFormat {
     LIGHT_PURPLE('d', 0xFF55FF, 0x3F153F),
     YELLOW('e', 0xFFFF55, 0x3F3F15),
     WHITE('f', 0xFFFFFF, 0x3F3F3F),
+    GALACTIC('g', 0xFFFFFF, 0xFFFFFF), // Galactic
     OBFUSCATED('k', true, 0xFFFFFF), // Unknown BRGB
     BOLD('l', true, 0xFFFF55),
     STRIKETHROUGH('m', true, 0xFFFFFF), // Unknown BRGB
