@@ -14,6 +14,8 @@ public interface Slayer extends Model {
 
     @NotNull String getId();
 
+    @NotNull String getName();
+
     @NotNull String getDescription();
 
     default @NotNull ConcurrentMap<String, Double> getEffects() {
@@ -34,25 +36,22 @@ public interface Slayer extends Model {
             .collect(Concurrent.toUnmodifiableList());
     }
 
-    default @NotNull SlayerExtra getExtra() {
-        return MinecraftApi.getRepositoryOf(SlayerExtra.class).findFirstOrNull(SlayerExtra::getId, this.getId());
-    }
-
-    @NotNull ConcurrentList<Level> getLevels();
-
     int getMaxLevel();
 
     int getMaxTier();
 
-    @NotNull String getName();
+    double getWeightModifier();
 
-    default double getWeightModifier() {
-        return this.getExtra().getWeightModifier();
+    int getWeightDivider();
+
+    @NotNull String getMobTypeId();
+
+    default @NotNull MobType getMobType() {
+        return MinecraftApi.getRepositoryOf(MobType.class)
+            .findFirstOrNull(MobType::getId, this.getMobTypeId());
     }
 
-    default int getWeightDivider() {
-        return this.getExtra().getWeightDivider();
-    }
+    @NotNull ConcurrentList<Level> getLevels();
 
     interface Level {
 

@@ -19,10 +19,7 @@ import javax.persistence.Id;
 @Entity
 @JsonResource(
     path = "skyblock",
-    name = "skills",
-    required = {
-        JsonSkillExtra.class
-    }
+    name = "skills"
 )
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class JsonSkill implements Skill, JsonModel {
@@ -31,6 +28,9 @@ public class JsonSkill implements Skill, JsonModel {
     private @NotNull String name = "";
     private @NotNull String description = "";
     private int maxLevel = 50;
+    private boolean cosmetic;
+    private double weightExponent;
+    private int weightDivider;
     private @NotNull ConcurrentList<JsonSkillLevel> levels = Concurrent.newList();
 
     @Override

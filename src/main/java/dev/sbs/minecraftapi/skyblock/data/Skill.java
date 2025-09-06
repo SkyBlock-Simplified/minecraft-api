@@ -14,6 +14,8 @@ public interface Skill extends Model {
 
     @NotNull String getId();
 
+    @NotNull String getName();
+
     @NotNull String getDescription();
 
     default @NotNull ConcurrentMap<String, Double> getEffects() {
@@ -34,31 +36,19 @@ public interface Skill extends Model {
             .collect(Concurrent.toUnmodifiableList());
     }
 
-    default @NotNull SkillExtra getExtra() {
-        return MinecraftApi.getRepositoryOf(SkillExtra.class).findFirstOrNull(SkillExtra::getId, this.getId());
-    }
-
     @NotNull ConcurrentList<Level> getLevels();
 
     int getMaxLevel();
 
-    @NotNull String getName();
-
-    default double getWeightExponent() {
-        return this.getExtra().getWeightExponent();
-    }
-
-    default int getWeightDivider() {
-        return this.getExtra().getWeightDivider();
-    }
-
-    default boolean isCosmetic() {
-        return this.getExtra().isCosmetic();
-    }
+    boolean isCosmetic();
 
     default boolean notCosmetic() {
         return !this.isCosmetic();
     }
+
+    double getWeightExponent();
+
+    int getWeightDivider();
 
     interface Level {
 

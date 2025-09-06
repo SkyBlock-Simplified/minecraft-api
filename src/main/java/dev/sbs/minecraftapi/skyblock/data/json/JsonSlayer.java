@@ -1,5 +1,6 @@
 package dev.sbs.minecraftapi.skyblock.data.json;
 
+import com.google.gson.annotations.SerializedName;
 import dev.sbs.api.builder.EqualsBuilder;
 import dev.sbs.api.builder.HashCodeBuilder;
 import dev.sbs.api.collection.concurrent.Concurrent;
@@ -19,10 +20,7 @@ import javax.persistence.Id;
 @Entity
 @JsonResource(
     path = "skyblock",
-    name = "slayers",
-    required = {
-        JsonSlayerExtra.class
-    }
+    name = "slayers"
 )
 @NoArgsConstructor(access = AccessLevel.NONE)
 public class JsonSlayer implements Slayer, JsonModel {
@@ -32,6 +30,10 @@ public class JsonSlayer implements Slayer, JsonModel {
     private @NotNull String description = "";
     private int maxLevel = 9;
     private int maxTier = 5;
+    @SerializedName("mobType")
+    private @NotNull String mobTypeId = "";
+    private double weightModifier;
+    private int weightDivider;
     private @NotNull ConcurrentList<JsonSlayerLevel> levels = Concurrent.newList();
 
     @Override
