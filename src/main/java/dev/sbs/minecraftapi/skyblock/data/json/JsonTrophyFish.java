@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.Optional;
 
 @Getter
 @Entity
@@ -25,7 +26,7 @@ public class JsonTrophyFish implements TrophyFish, JsonModel {
     private @Id @NotNull String id = "";
     private @NotNull String name = "";
     private @NotNull ChatFormat format = ChatFormat.WHITE;
-    @SerializedName("location")
-    private @NotNull String locationId = "";
+    @SerializedName("zone")
+    private @NotNull Optional<String> zoneId = Optional.empty();
 
 }

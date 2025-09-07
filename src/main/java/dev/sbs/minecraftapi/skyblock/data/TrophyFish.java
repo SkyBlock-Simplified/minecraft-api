@@ -4,6 +4,8 @@ import dev.sbs.api.data.Model;
 import dev.sbs.minecraftapi.text.ChatFormat;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
+
 public interface TrophyFish extends Model {
 
     @NotNull String getId();
@@ -12,7 +14,7 @@ public interface TrophyFish extends Model {
 
     @NotNull ChatFormat getFormat();
 
-    @NotNull String getLocationId();
+    @NotNull Optional<String> getZoneId();
 
     enum Tier {
 
